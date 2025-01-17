@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Fil d'Ariane -->
+    <div class="flex items-center gap-2 text-sm text-gray-600 mb-6">
+      <a class="hover:text-gray-900">Electroniques de Consommation</a>
+      <span>/</span>
+      <a class="hover:text-gray-900">Téléphone Portable & Accessoires</a>
+      <span>/</span>
+      <a class="hover:text-gray-900">Téléphone Intelligent</a>
+    </div>
+
+    <div *ngIf="loading" class="text-center">
+      <p>Chargement...</p>
+    </div>
+
+    <div *ngIf="error" class="text-red-500 text-center">
+      <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="catalogue" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Partie Gauche - Images -->
+      <div class="relative">
+        <img
+        [src]="catalogue.imageUrl"
+        [alt]="catalogue.name"
+        class="w-full rounded-lg max-h-[600px] object-contain"
+      />
+        <div class="absolute top-4 right-4 flex flex-col gap-4">
+          <button class="p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </button>
+          <button class="p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Partie Droite - Informations -->
+      <div class="space-y-6">
+        <h1 class="text-2xl font-bold text-gray-900">{{ catalogue.name }}</h1>
+
+        <!-- Prix -->
+        <div class="space-y-4">
+          <div class="flex items-baseline gap-4">
+            <span class="text-2xl font-bold text-gray-900">{{ catalogue.price }} $US</span>
+            <span class="text-sm text-gray-600">1-99 Pièces</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="text-2xl font-bold text-gray-900">{{ catalogue.price - 6 }} $US</span>
+            <span class="text-sm text-gray-600">100-999 Pièces</span>
+          </div>
+          <div class="flex items-baseline gap-4">
+            <span class="text-2xl font-bold text-gray-900">{{ catalogue.price - 9 }} $US</span>
+            <span class="text-sm text-gray-600">1000+ Pièces</span>
+          </div>
+        </div>
+
+        <!-- Détails -->
+        <div class="border-t pt-6">
+          <h2 class="text-xl font-semibold mb-4">Détails du Produit</h2>
+          <div class="space-y-4">
+            <div class="grid grid-cols-3 gap-4">
+              <span class="text-gray-600">Personnalisation:</span>
+              <span class="col-span-2">Disponible</span>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <span class="text-gray-600">Standard réseau:</span>
+              <span class="col-span-2">4G, 3G, CDMA, GSM</span>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <span class="text-gray-600">Style:</span>
+              <span class="col-span-2">{{ catalogue.description }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="flex gap-4">
+          <button class="px-8 py-3 bg-red-600 text-white rounded-full hover:bg-red-700">
+            Contacter le fournisseur
+          </button>
+          <button class="px-8 py-3 border border-gray-300 rounded-full hover:bg-gray-50">
+            Discussions instantanées
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
