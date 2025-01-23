@@ -10,16 +10,32 @@
         
         <!-- Navigation -->
         <div class="hidden md:flex items-center gap-8">
-          <a  class="text-gray-600 hover:text-emerald-600 transition-colors" [routerLink]="['/home']">Mobile Channel</a>
-          <a  class="text-gray-600 hover:text-emerald-600 transition-colors" [routerLink]="['/catalogue']" routerLinkActive="active">For Buyer</a>
-          <a  class="text-gray-600 hover:text-emerald-600 transition-colors">For Supplier</a>
-        
-         
-          <a class="text-blue-600 hover:text-blue-700" [routerLink]="['/formulaire']">Sign In</a>
+          <a 
+            class="text-gray-600 hover:text-emerald-600 transition-colors"
+            [routerLink]="['/home']">
+            Mobile Channel
+          </a>
+          <a 
+            class="text-gray-600 hover:text-emerald-600 transition-colors"
+            [routerLink]="['/produit']" 
+            routerLinkActive="active">
+            For Buyer
+          </a>
+          <a 
+            class="text-gray-600 hover:text-emerald-600 transition-colors">
+            For Supplier
+          </a>
+          <a 
+            class="text-blue-600 hover:text-blue-700"
+            [routerLink]="['/login']">
+            Sign In
+          </a>
         </div>
       </div>
     </nav>
   </header>
-  <router-outlet></router-outlet>
   
+  <!-- Dynamic Content -->
+  <router-outlet></router-outlet>
+
 </div>

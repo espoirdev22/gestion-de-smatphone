@@ -1,60 +1,208 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CatalogueService } from '../service/catalogue.service';
-import { Icatalogue } from '../model/catalogue';
+import { ProduitService } from '../service/produit.service';
+import { Iproduit } from '../model/produit';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  standalone:false,
+  standalone: false,
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  catalogue: Icatalogue[] = [];
-  catalogueFilter: string = ''; // Pour filtrer le catalogue
+  produits: Iproduit[] = [];
+  produitFilter = '';
+  showAddForm = false;
+  showDetailModal = false;
+  showEditModal = false;
+  selectedProduit: Iproduit | null = null;
+  loading = false;
+  error = '';
 
-  constructor(private catalogueService: CatalogueService, private router: Router) { }
+  newProduit: Iproduit = this.getEmptyProduit();
+
+  constructor(
+    private produitService: ProduitService,
+    private router: Router
+  ) {
+    this.selectedProduit = null;
+  }
+
+  private getEmptyProduit(): Iproduit {
+    return {
+      id: 0,
+      name: '',
+      marque: '',
+      description: '',
+      price: 0,
+      imageUrl: ''
+    };
+  }
 
   ngOnInit(): void {
-    this.loadCatalogue();
+    this.loadProduits();
   }
 
-  private loadCatalogue(): void {
-    this.catalogueService.getCatalogue().subscribe(
-      (data: Icatalogue[]) => {
-        this.catalogue = data;
+  private loadProduits(): void {
+    this.loading = true;
+    this.error = '';
+    this.produitService.getProduit().subscribe({
+      next: (data: Iproduit[]) => {
+        this.produits = data;
+        this.loading = false;
       },
-      (error) => {
-        console.error("Erreur lors de la récupération du catalogue", error);
+      error: (error) => {
+        this.error = "Erreur lors du chargement des produits";
+        this.loading = false;
+        console.error(error);
       }
+    });
+  }
+
+  get filteredProduit(): Iproduit[] {
+    return this.produits.filter(produit =>
+      produit.name.toLowerCase().includes(this.produitFilter.toLowerCase()) ||
+      produit.marque.toLowerCase().includes(this.produitFilter.toLowerCase())
     );
   }
 
-  // Méthode pour filtrer le catalogue
-  get filteredCatalogue(): Icatalogue[] {
-    return this.catalogue.filter(catalogue =>
-      catalogue.name.toLowerCase().includes(this.catalogueFilter.toLowerCase())
-    );
+  editProduit(id: number): void {
+    this.loading = true;
+    this.error = '';
+    this.produitService.getProduitById(id).subscribe({
+      next: (produit: Iproduit) => {
+        this.selectedProduit = produit;
+        this.showEditModal = true;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = "Erreur lors du chargement du produit";
+        this.loading = false;
+        console.error(error);
+      }
+    });
   }
 
-  // Méthode pour éditer un catalogue
-  editCatalogue(id: number): void {
-    this.router.navigate(['/edit-catalogue', id]);
+  updateProduit(): void {
+    if (this.selectedProduit) {
+      if (this.validateProduit(this.selectedProduit)) {
+        this.loading = true;
+        this.error = '';
+        this.produitService.updateProduit(this.selectedProduit.id, this.selectedProduit).subscribe({
+          next: () => {
+            this.loadProduits();
+            this.closeEdit();
+            this.loading = false;
+          },
+          error: (error) => {
+            this.error = "Erreur lors de la mise à jour du produit";
+            this.loading = false;
+            console.error(error);
+          }
+        });
+      }
+    } else {
+      this.error = "Aucun produit sélectionné";
+    }
   }
 
-  // Méthode pour supprimer un catalogue
-  deleteCatalogue(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce catalogue ?')) {
-      this.catalogueService.deleteCatalogue(id).subscribe(() => {
-        this.loadCatalogue(); // Recharger le catalogue après la suppression
-      }, (error) => {
-        console.error("Erreur lors de la suppression du catalogue", error);
+  closeEdit(): void {
+    this.showEditModal = false;
+    this.selectedProduit = null;
+  }
+
+  showDetails(id: number): void {
+    this.loading = true;
+    this.error = '';
+    this.produitService.getProduitById(id).subscribe({
+      next: (produit: Iproduit) => {
+        this.selectedProduit = produit;
+        this.showDetailModal = true;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = "Erreur lors du chargement du produit";
+        this.loading = false;
+        console.error(error);
+      }
+    });
+  }
+
+  closeDetails(): void {
+    this.showDetailModal = false;
+    this.selectedProduit = null;
+  }
+
+  get produitCount(): number {
+    return this.filteredProduit.length;
+  }
+
+  toggleAddForm(): void {
+    this.showAddForm = !this.showAddForm;
+    if (!this.showAddForm) {
+      this.resetNewProduit();
+    }
+  }
+
+  resetNewProduit(): void {
+    this.newProduit = this.getEmptyProduit();
+  }
+
+  onSubmit(): void {
+    if (this.validateProduit()) {
+      this.loading = true;
+      this.error = '';
+      this.produitService.addProduit(this.newProduit).subscribe({
+        next: () => {
+          this.loadProduits();
+          this.toggleAddForm();
+          this.resetNewProduit();
+          this.loading = false;
+        },
+        error: (error) => {
+          this.error = "Erreur lors de l'ajout du produit";
+          this.loading = false;
+          console.error(error);
+        }
       });
     }
   }
 
-  // Compteur des catalogues filtrés
-  get catalogueCount(): number {
-    return this.filteredCatalogue.length;
+  validateProduit(produit?: Iproduit): boolean {
+    const p = produit || this.newProduit;
+    if (!p.name.trim()) {
+      this.error = "Le nom du produit est requis";
+      return false;
+    }
+    if (!p.marque.trim()) {
+      this.error = "La marque du produit est requise";
+      return false;
+    }
+    if (!p.description.trim()) {
+      this.error = "La description du produit est requise";
+      return false;
+    }
+    if (p.price <= 0) {
+      this.error = "Le prix doit être supérieur à 0";
+      return false;
+    }
+    this.error = '';
+    return true;
+  }
+
+  deleteProduit(id: number): void {
+    this.loading = true;
+    this.error = '';
+    this.produitService.deleteProduit(id).subscribe({
+      next: () => {
+        this.loadProduits();
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = "Erreur lors de la suppression du produit";
+        this.loading = false;
+        console.error(error);
+      }
+    });
   }
 }

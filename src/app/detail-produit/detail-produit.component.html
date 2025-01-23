@@ -17,12 +17,12 @@
       <p>{{ error }}</p>
     </div>
 
-    <div *ngIf="catalogue" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div *ngIf="produit" class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Partie Gauche - Images -->
       <div class="relative">
         <img
-        [src]="catalogue.imageUrl"
-        [alt]="catalogue.name"
+        [src]="produit.imageUrl"
+        [alt]="produit.name"
         class="w-full rounded-lg max-h-[600px] object-contain"
       />
         <div class="absolute top-4 right-4 flex flex-col gap-4">
@@ -41,20 +41,20 @@
 
       <!-- Partie Droite - Informations -->
       <div class="space-y-6">
-        <h1 class="text-2xl font-bold text-gray-900">{{ catalogue.name }}</h1>
+        <h1 class="text-2xl font-bold text-gray-900">{{ produit.name }}</h1>
 
         <!-- Prix -->
         <div class="space-y-4">
           <div class="flex items-baseline gap-4">
-            <span class="text-2xl font-bold text-gray-900">{{ catalogue.price }} $US</span>
+            <span class="text-2xl font-bold text-gray-900">{{ produit.price }} $US</span>
             <span class="text-sm text-gray-600">1-99 Pièces</span>
           </div>
           <div class="flex items-baseline gap-4">
-            <span class="text-2xl font-bold text-gray-900">{{ catalogue.price - 6 }} $US</span>
+            <span class="text-2xl font-bold text-gray-900">{{ produit.price - 6 }} $US</span>
             <span class="text-sm text-gray-600">100-999 Pièces</span>
           </div>
           <div class="flex items-baseline gap-4">
-            <span class="text-2xl font-bold text-gray-900">{{ catalogue.price - 9 }} $US</span>
+            <span class="text-2xl font-bold text-gray-900">{{ produit.price - 9 }} $US</span>
             <span class="text-sm text-gray-600">1000+ Pièces</span>
           </div>
         </div>
@@ -73,19 +73,17 @@
             </div>
             <div class="grid grid-cols-3 gap-4">
               <span class="text-gray-600">Style:</span>
-              <span class="col-span-2">{{ catalogue.description }}</span>
+              <span class="col-span-2">{{ produit.description }}</span>
             </div>
           </div>
         </div>
 
         <!-- Boutons d'action -->
         <div class="flex gap-4">
-          <button class="px-8 py-3 bg-red-600 text-white rounded-full hover:bg-red-700">
-            Contacter le fournisseur
+          <button class="px-8 py-3 bg-red-600 text-white rounded-full hover:bg-red-700"  [routerLink]="['/produit']" >
+           Reveiw Catalogue
           </button>
-          <button class="px-8 py-3 border border-gray-300 rounded-full hover:bg-gray-50">
-            Discussions instantanées
-          </button>
+         
         </div>
       </div>
     </div>

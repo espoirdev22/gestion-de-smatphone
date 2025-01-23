@@ -1,97 +1,327 @@
 <div class="min-h-screen bg-gray-50">
     <!-- Admin Navigation -->
-    <nav class="bg-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <button class="p-2 rounded-md hover:bg-gray-700">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
-                        </svg>
-                    </button>
-                    <span class="ml-4 text-xl font-semibold">SmartSource Admin</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+    <nav class="fixed top-0 w-full bg-gray-800 text-white py-3 px-6 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <span class="text-lg">SmartSource Admin</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span>Admin</span>
+                <span class="p-2 hover:bg-gray-700 rounded-full cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span>Admin</span>
-                    <button class="p-2 rounded-md hover:bg-gray-700">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                    </button>
-                </div>
+                </span>
+                <span class="p-2 hover:bg-gray-700 rounded-full cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"  [routerLink]="['/produit']" 
+                        routerLinkActive="active"/>
+                    </svg>
+                </span>
             </div>
         </div>
     </nav>
 
-    <!-- Side Navigation -->
-    <div class="fixed inset-y-0 left-0 transform -translate-x-full w-64 bg-gray-800 text-white transition-transform duration-300 ease-in-out z-20">
-        <div class="p-6">
-            <div class="space-y-4">
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Dashboard</a>
-                <a href="#" class="block py-2.5 px-4 rounded bg-gray-700">Catalogue</a>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Commandes</a>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Utilisateurs</a>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Paramètres</a>
-            </div>
-        </div>
-    </div>
-
+    
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Search Bar -->
+        <!-- Search Bar and Add Button -->
         <div class="mb-9 mt-10">
-            <div class="flex flex-col sm:flex-row gap-4">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <div class="flex-1 w-full">
                     <input 
                         type="text" 
-                        [(ngModel)]="catalogueFilter" 
+                        [(ngModel)]="produitFilter" 
                         placeholder="Rechercher un smartphone..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                 </div>
+                <button 
+                    (click)="toggleAddForm()"
+                    class="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Ajouter un produit
+                </button>
             </div>
+        </div>
+
+        <!-- Add Product Form -->
+        <div *ngIf="showAddForm" class="mb-8 bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-bold mb-4">Ajouter un nouveau produit</h2>
+            <form (ngSubmit)="onSubmit()" #produitForm="ngForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nom du produit</label>
+                    
+                    <input 
+                        type="text" 
+                        [(ngModel)]="newProduit.name"
+                        name="name"
+                        required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Marque</label>
+                    <input 
+                        type="text" 
+                        [(ngModel)]="newProduit.marque"
+                        name="marque"
+                        required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Prix (€)</label>
+                    <input 
+                        type="number" 
+                        [(ngModel)]="newProduit.price"
+                        name="price"
+                        required
+                        min="0"
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea 
+                        [(ngModel)]="newProduit.description"
+                        name="description"
+                        required
+                        rows="3"
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Image URL</label>
+                    <input 
+                        type="text" 
+                        [(ngModel)]="newProduit.imageUrl"
+                        name="imageUrl"
+                        required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div class="flex gap-4">
+                    <button 
+                        type="submit"
+                        [disabled]="!produitForm.form.valid"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
+                        Enregistrer
+                    </button>
+                    <button 
+                        type="button"
+                        (click)="toggleAddForm()"
+                        class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                        Annuler
+                    </button>
+                </div>
+            </form>
         </div>
 
         <!-- Product Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300" 
-                 *ngFor="let catalogue of filteredCatalogue">
+                 *ngFor="let produit of filteredProduit">
                 <div class="relative h-64 overflow-hidden rounded-t-lg">
                     <img
-                        [src]="catalogue.imageUrl"
-                        [title]="catalogue.name"
-                        [alt]="catalogue.name"
+                        [src]="produit.imageUrl"
+                        [title]="produit.name"
+                        [alt]="produit.name"
                         class="w-full h-full object-contain"
                     >
                 </div>
                 <div class="p-4">
                     <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">{{ catalogue.name }}</h3>
-                        <p class="text-sm text-gray-500">{{ catalogue.marque }}</p>
-                        <p class="text-2xl font-bold text-blue-600 mt-2">{{ catalogue.price }}€</p>
+                        <h3 class="text-lg font-semibold text-gray-900">{{ produit.name }}</h3>
+                        <p class="text-sm text-gray-500">{{ produit.marque }}</p>
+                        <p class="text-2xl font-bold text-blue-600 mt-2">{{ produit.price }} CFA</p>
                     </div>
                     <div class="flex gap-2">
                         <button 
                             class="flex-1 px-3 py-2 text-sm font-medium rounded-md text-yellow-600 bg-yellow-50 hover:bg-yellow-100 transition-colors"
-                            (click)="editCatalogue(catalogue.id)">
+                            (click)="editProduit(produit.id)">
                             Éditer
                         </button>
                         <button 
                             class="flex-1 px-3 py-2 text-sm font-medium rounded-md text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
-                            (click)="deleteCatalogue(catalogue.id)">
+                            (click)="deleteProduit(produit.id)">
                             Supprimer
                         </button>
                         <button 
-                            class="flex-1 px-3 py-2 text-sm font-medium rounded-md text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
-                            [routerLink]="['/detail-catalogue', catalogue.id]">
-                            Détails
-                        </button>
+                        class="flex-1 px-3 py-2 text-sm font-medium rounded-md text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+                        (click)="showDetails(produit.id)">
+                        Détails
+                    </button>
                     </div>
                 </div>
             </div>
         </div>
+        <div *ngIf="showDetailModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
+            <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-end mb-4">
+                        <button 
+                            (click)="closeDetails()"
+                            class="p-2 hover:bg-gray-100 rounded-full">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div *ngIf="loading" class="text-center py-8">
+                        <p>Chargement...</p>
+                    </div>
+
+                    <div *ngIf="error" class="text-red-500 text-center py-8">
+                        <p>{{ error }}</p>
+                    </div>
+
+                    <div *ngIf="selectedProduit && !loading" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Image Section -->
+                        <div class="relative">
+                            <img
+                                [src]="selectedProduit.imageUrl"
+                                [alt]="selectedProduit.name"
+                                class="w-full rounded-lg max-h-[600px] object-contain"
+                            />
+                        </div>
+
+                        <!-- Details Section -->
+                        <div class="space-y-6">
+                            <h1 class="text-2xl font-bold text-gray-900">{{ selectedProduit.name }}</h1>
+
+                            <!-- Prix -->
+                            <div class="space-y-4">
+                                <div class="flex items-baseline gap-4">
+                                    <span class="text-2xl font-bold text-gray-900">{{ selectedProduit.price }} CFA</span>
+                                    <span class="text-sm text-gray-600">1-99 Pièces</span>
+                                </div>
+                                <div class="flex items-baseline gap-4">
+                                    <span class="text-2xl font-bold text-gray-900">{{ selectedProduit.price - 6 }} CFA</span>
+                                    <span class="text-sm text-gray-600">100-999 Pièces</span>
+                                </div>
+                                <div class="flex items-baseline gap-4">
+                                    <span class="text-2xl font-bold text-gray-900">{{ selectedProduit.price - 9 }} CFA</span>
+                                    <span class="text-sm text-gray-600">1000+ Pièces</span>
+                                </div>
+                            </div>
+
+                            <!-- Détails -->
+                            <div class="border-t pt-6">
+                                <h2 class="text-xl font-semibold mb-4">Détails du Produit</h2>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <span class="text-gray-600">Marque:</span>
+                                        <span class="col-span-2">{{ selectedProduit.marque }}</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <span class="text-gray-600">Description:</span>
+                                        <span class="col-span-2">{{ selectedProduit.description }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Boutons d'action -->
+                            <div class="flex gap-4">
+                                <button class="px-8 py-3 bg-red-600 text-white rounded-full hover:bg-red-700">
+                                    Contacter le fournisseur
+                                </button>
+                                <button class="px-8 py-3 border border-gray-300 rounded-full hover:bg-gray-50">
+                                    Discussions instantanées
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
+            <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-end mb-4">
+                        <button 
+                            (click)="closeEdit()"
+                            class="p-2 hover:bg-gray-100 rounded-full">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+        
+                    <div *ngIf="loading" class="text-center py-8">
+                        <p>Chargement...</p>
+                    </div>
+        
+                    <div *ngIf="error" class="text-red-500 text-center py-8">
+                        <p>{{ error }}</p>
+                    </div>
+        
+                    <div *ngIf="selectedProduit && !loading" class="space-y-4">
+                        <h2 class="text-xl font-semibold">Modifier le produit</h2>
+                        <form (ngSubmit)="updateProduit()" #editForm="ngForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nom du produit</label>
+                                <input 
+                                    type="text" 
+                                    [(ngModel)]="selectedProduit.name"
+                                    name="name"
+                                    required
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Marque</label>
+                                <input 
+                                    type="text" 
+                                    [(ngModel)]="selectedProduit.marque"
+                                    name="marque"
+                                    required
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Prix (€)</label>
+                                <input 
+                                    type="number" 
+                                    [(ngModel)]="selectedProduit.price"
+                                    name="price"
+                                    required
+                                    min="0"
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea 
+                                    [(ngModel)]="selectedProduit.description"
+                                    name="description"
+                                    required
+                                    rows="3"
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Image URL</label>
+                                <input 
+                                    type="text" 
+                                    [(ngModel)]="selectedProduit.imageUrl"
+                                    name="imageUrl"
+                                    required
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div class="flex gap-4">
+                                <button 
+                                    type="submit"
+                                    [disabled]="!editForm.form.valid"
+                                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
+                                    Enregistrer
+                                </button>
+                                <button 
+                                    type="button"
+                                    (click)="closeEdit()"
+                                    class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                                    Annuler
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </main>
 </div>

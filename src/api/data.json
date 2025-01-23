@@ -1,0 +1,59 @@
+{
+  "auth": [
+    {
+      "username": "admin",
+      "password": "passer",
+      "id": "f2ff"
+    }
+  ],
+  "produit": [
+    {
+      "id": "11",
+      "name": "Google pixel 7 pro 512Gb",
+      "marque": "Google",
+      "description": "Google pixel 7 pro 512giga venant état comme neuf sans aucune égratignure ni rayures vente sur facture avec garantie adresse de la boutique hann mariste vers la banque cbao livraison gratuite sur dakar avec chargeur",
+      "price": 259000,
+      "imageUrl": "https://i.roamcdn.net/hz/ed/listing-gallery-main-844w/9da1b16c6d1b2ca6c71fe4c1492a8d0a/-/horizon-files-prod/ed/picture/qkr8kjkj/9d6b25279bbbdd12cf1c8e30cc0d7294d7eb75a5.jpg"
+    },
+    {
+      "id": "12",
+      "name": "samsung galaxy",
+      "marque": "A06",
+      "description": "Samsung Galaxy A06 - 6.7\" - Ram 4Go, Rom 64Go - 5000mAh - 4G – Bleu clair",
+      "price": 54000,
+      "imageUrl": "https://sn.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/24/469221/1.jpg?3986"
+    },
+    {
+      "id": "13",
+      "name": "iphone 12",
+      "marque": "choetech",
+      "description": "type de produit : Coque magnetique",
+      "price": 400000,
+      "imageUrl": "https://www.electromenager-dakar.com/wp-content/uploads/2022/03/Electromenager-dakar-64-500x500.png"
+    },
+    {
+      "id": "14",
+      "name": "redmi  12",
+      "marque": "note 12",
+      "description": "Le Redmi 12 offre un stockage impressionnant de 256 Go et 8 Go de RAM pour des performances fluides. Son écran de 6,79 pouces garantit une expérience visuelle immersive. Idéal pour le multitâche et les divertissements, il allie style et fonctionnalités.",
+      "price": 12003,
+      "imageUrl": "https://i0.wp.com/www.soumari.com/wp-content/uploads/2025/01/Redmi-12-256-Go-RAM-8-Go.webp?resize=300%2C300&ssl=1"
+    },
+    {
+      "id": "15",
+      "name": " IPhone 14 Pro max",
+      "marque": "iphone",
+      "description": "L’iPhone 14 Pro avec 256 Go de stockage allie performance et élégance. Équipé d’un écran Super Retina XDR de 6,1 pouces pour une qualité visuelle exceptionnelle et une fluidité grâce à la technologie ProMotion. Capturez vos moments avec précision grâce à ses fonctionnalités avancées.",
+      "price": 500000,
+      "imageUrl": "https://i0.wp.com/www.soumari.com/wp-content/uploads/2025/01/iphone-14-pro-256-go.webp?fit=750%2C750&ssl=1"
+    },
+    {
+      "id": "16",
+      "name": " Redmi 14c ",
+      "marque": "Redmi",
+      "description": "Le Redmi 14C offre un grand écran de 6,88 pouces pour une expérience visuelle immersive. Avec 256 Go de stockage et 8 Go de RAM, il garantit fluidité et espace pour vos fichiers. Son design moderne et ses performances fiables en font un choix idéal pour le quotidien. Profitez d’une autonomie durable et de fonctionnalités avancées.",
+      "price": 69,
+      "imageUrl": "https://i0.wp.com/www.soumari.com/wp-content/uploads/2025/01/Redmi-14-c-256-Go-RAM-8-Go.webp?resize=300%2C300&ssl=1"
+    }
+  ]
+}
